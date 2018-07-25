@@ -31,7 +31,7 @@ void CBgmConsole::DoneOpenDevice()
 void CBgmConsole::FailedOpenDevice()
 {
     tcout << std::endl << _T("Cannot open audiere device") << std::endl;
-    Pause();
+    Exit();
 }
 
 void CBgmConsole::DoneLoadStream()
@@ -46,7 +46,7 @@ void CBgmConsole::DoneLoadStream()
 void CBgmConsole::FailedLoadStream(const tstring &szDeviceName)
 {
     tcout << std::endl << _T("Cannot load file \"") << szDeviceName << _T("\"") << std::endl;
-    Pause();
+    Exit();
 }
 
 void CBgmConsole::DoneStartPlayback(const tstring &szDeviceName, const tstring &szFileName)
@@ -62,7 +62,7 @@ void CBgmConsole::DoneStartPlayback(const tstring &szDeviceName, const tstring &
 void CBgmConsole::FailedStartPlayback()
 {
     tcout << _T("failed!") << std::endl;
-    Pause();
+    Exit();
 }
 
 void CBgmConsole::UpdateStatus(bool shouldLoop, bool isPausing, float fVolume, float fPan, float fPitch)
@@ -80,13 +80,13 @@ void CBgmConsole::UpdateStatus(bool shouldLoop, bool isPausing, float fVolume, f
     tcout << _T("Pitch: ") << std::showpos << std::showpoint << fPitch << _T(">");
 }
 
-void CBgmConsole::Pause()
+void CBgmConsole::Exit()
 {
     if (m_should_pause_)
     {
         system("pause");
-        exit(-1);
     }
+    exit(-1);
 }
 
 BOOL WINAPI CBgmConsole::HandlerRoutine(DWORD dwCtrlType)
