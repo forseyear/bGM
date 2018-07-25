@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "background-music player for Game Maker", "background-music player for Game Maker\background-music player for Game Maker.vcxproj", "{0728922B-DEF6-48F1-8C44-182B3F1C4E40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0728922B-DEF6-48F1-8C44-182B3F1C4E40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0728922B-DEF6-48F1-8C44-182B3F1C4E40}.Debug|Win32.Build.0 = Debug|Win32
+		{0728922B-DEF6-48F1-8C44-182B3F1C4E40}.Release|Win32.ActiveCfg = Release|Win32
+		{0728922B-DEF6-48F1-8C44-182B3F1C4E40}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
