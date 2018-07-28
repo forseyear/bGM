@@ -19,6 +19,7 @@
 #include <vector>
 #include <memory>
 #include <future>
+#include <algorithm>
 #include <tchar.h>
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください

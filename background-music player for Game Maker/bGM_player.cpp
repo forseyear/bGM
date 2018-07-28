@@ -28,8 +28,7 @@ void CBgmPlayer::init(sound_options_p const &so)
         m_pBgmConsole_->FailedOpenDevice();
     }
     
-    m_sample_source_ = audiere::OpenSampleSource(cc.ToString(m_sound_options_.filename).data());
-    m_loop_point_ = audiere::CreateLoopPointSource(m_sample_source_);
+    m_loop_point_ = audiere::CreateLoopPointSource(audiere::OpenSampleSource(cc.ToString(m_sound_options_.filename).data()));
     m_sample_source_ = m_loop_point_.get();
     m_output_stream_ = audiere::OpenSound(m_audio_device_, m_sample_source_, true);
 
@@ -40,7 +39,6 @@ void CBgmPlayer::init(sound_options_p const &so)
         tstring filename = cc.ToTstring(m_sound_options_.filename.data());
         m_pBgmConsole_->FailedLoadStream(filename);
     }
-    
     
     m_output_stream_->setPan(m_sound_options_.pan);
     m_output_stream_->setPitchShift(m_sound_options_.pitch);
@@ -60,18 +58,23 @@ void CBgmPlayer::init(sound_options_p const &so)
     } else {
         m_pBgmConsole_->FailedStartPlayback();
     }
+
+    m_sound_start_ = 0;
+    m_sound_end_ = m_output_stream_->getLength();
 }
 
-void CBgmPlayer::fadeIn(int fadeFrame, float fadedVolume)
+void CBgmPlayer::fadeIn(int fadeFrame, float volume)
 {
-    std::chrono::milliseconds interval((int)fadeFrame / m_fade_count);
+    float fadedVolume = volumeRange(volume);
+    std::chrono::milliseconds interval((int)fadeFrame / m_fade_count_);
     std::thread thFade([&] { executeFadeIn(interval, fadedVolume); });
     thFade.detach();
 }
 
-void CBgmPlayer::fadeOut(int fadeFrame, float fadedVolume)
+void CBgmPlayer::fadeOut(int fadeFrame, float volume)
 {
-    std::chrono::milliseconds interval((int)fadeFrame / m_fade_count);
+    float fadedVolume = volumeRange(volume);
+    std::chrono::milliseconds interval((int)fadeFrame / m_fade_count_);
     std::thread thFade([&] { executeFadeOut(interval, fadedVolume); });
     thFade.detach();
 }
@@ -80,10 +83,10 @@ void CBgmPlayer::executeFadeIn(std::chrono::milliseconds interval, float fadedVo
 {
     m_need_StopFade_ = false;
     float beforeVolume = m_output_stream_->getVolume();
-    float volumeAcceleration = (fadedVolume - m_output_stream_->getVolume()) / m_fade_count;
+    float volumeAcceleration = (fadedVolume - m_output_stream_->getVolume()) / m_fade_count_;
     int loopCount = 1;
 
-    while (loopCount < m_fade_count)
+    while (loopCount < m_fade_count_)
     {
         if (m_need_StopFade_) {
             break;
@@ -108,10 +111,10 @@ void CBgmPlayer::executeFadeOut(std::chrono::milliseconds interval, float fadedV
 {
     m_need_StopFade_ = false;
     float beforeVolume = m_output_stream_->getVolume();
-    float volumeAcceleration = (m_output_stream_->getVolume() - fadedVolume) / m_fade_count;
+    float volumeAcceleration = (m_output_stream_->getVolume() - fadedVolume) / m_fade_count_;
     int loopCount = 1;
 
-    while (loopCount < m_fade_count)
+    while (loopCount < m_fade_count_)
     {
         if (m_need_StopFade_) {
             break;
@@ -177,7 +180,7 @@ void CBgmPlayer::stop()
 void CBgmPlayer::setVolume(float volume)
 {
     stopFade();
-    m_sound_options_.volume = volume;
+    m_sound_options_.volume = volumeRange(volume);
     m_output_stream_->setVolume(m_sound_options_.volume);
     printSoundOptions();
 }
@@ -185,7 +188,7 @@ void CBgmPlayer::setVolume(float volume)
 void CBgmPlayer::setPan(float pan)
 {
     stopFade();
-    m_sound_options_.pan = pan;
+    m_sound_options_.pan = panRange(pan);
     m_output_stream_->setPan(m_sound_options_.pan);
     printSoundOptions();
 }
@@ -193,23 +196,31 @@ void CBgmPlayer::setPan(float pan)
 void CBgmPlayer::setPitch(float pitch)
 {
     stopFade();
-    m_sound_options_.pitch = pitch;
+    m_sound_options_.pitch = pitchRange(pitch);
     m_output_stream_->setPitchShift(m_sound_options_.pitch);
     printSoundOptions();
 }
 
 void CBgmPlayer::addRepeat(int repeatPositionA, int repeatPositionB)
 {
-    m_repeat_positionA = repeatPositionA;
-    m_repeat_positionB = repeatPositionB;
+    if (!m_sound_options_.isLooping)
+    {
+        setLoop(true);
+    }
+    m_repeat_positionA_ = soundRange(repeatPositionA);
+    m_repeat_positionB_ = soundRange(repeatPositionB);
     
-    m_loop_point_->addLoopPoint(m_repeat_positionA, m_repeat_positionB, 0);
+    m_loop_point_->addLoopPoint(m_repeat_positionA_, m_repeat_positionB_, 0);
 }
 
 void CBgmPlayer::setRepeatCount(int repeatCount)
 {
+    if (!m_sound_options_.isLooping)
+    {
+        setLoop(true);
+    }
     removeRepeat();
-    m_loop_point_->addLoopPoint(m_repeat_positionA, m_repeat_positionB, repeatCount);
+    m_loop_point_->addLoopPoint(m_repeat_positionA_, m_repeat_positionB_, repeatCount);
 }
 
 void CBgmPlayer::removeRepeat()
@@ -219,7 +230,7 @@ void CBgmPlayer::removeRepeat()
 
 void CBgmPlayer::checkRepeat()
 {
-    m_output_stream_->setPosition(((m_repeat_positionA - 200000) > 0) ? (m_repeat_positionA - 200000) : m_repeat_positionA);
+    m_output_stream_->setPosition(((m_repeat_positionA_ - 200000) > 0) ? (m_repeat_positionA_ - 200000) : m_repeat_positionA_);
 }
 
 void CBgmPlayer::setLoop(bool isLooping)
@@ -231,7 +242,7 @@ void CBgmPlayer::setLoop(bool isLooping)
 
 void CBgmPlayer::setPosition(int position)
 {
-    m_output_stream_->setPosition(position);
+    m_output_stream_->setPosition(soundRange(position));
 }
 
 bool CBgmPlayer::getisLooping() const
@@ -258,4 +269,31 @@ void CBgmPlayer::printSoundOptions()
         m_sound_options_.pan,
         m_sound_options_.pitch
     );
+}
+
+int CBgmPlayer::soundRange(const int &number)
+{
+    return maxmin(m_sound_end_, m_sound_start_, number);
+}
+
+float CBgmPlayer::volumeRange(const float &volume)
+{
+    return maxmin(0.0f, 1.0f, volume);
+}
+
+float CBgmPlayer::panRange(const float &pan)
+{
+    return maxmin(1.0f, -1.0f, pan);
+}
+
+float CBgmPlayer::pitchRange(const float &pitch)
+{
+    return maxmin(0.5f, 2.0f, pitch);
+}
+
+template <typename T>
+T CBgmPlayer::maxmin(const T &max, const T &min, const T &number)
+{
+    T small = std::min(max, number);
+    return std::max(min, small);
 }
