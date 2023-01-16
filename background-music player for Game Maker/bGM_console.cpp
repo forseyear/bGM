@@ -80,6 +80,21 @@ void CBgmConsole::UpdateStatus(bool shouldLoop, bool isPausing, float fVolume, f
     tcout << _T("Pitch: ") << std::showpos << std::showpoint << fPitch << _T(">");
 }
 
+void CBgmConsole::UpdateMIDIStatus(bool shouldLoop, bool isPausing)
+{
+    tcout << _T("\r<Loop: ");
+    if (shouldLoop == true) tcout << _T("yes, ");
+    else tcout << _T(" no, ");
+
+    tcout << _T("Paused: ");
+    if (isPausing == true) tcout << _T("yes, ");
+    else tcout << _T(" no, ");
+
+    tcout << _T("Volume: ") << _T("unsupported, ");
+    tcout << _T("Pan: ") << _T("unsupported, ");
+    tcout << _T("Pitch: ") << _T("unsupported>");
+}
+
 void CBgmConsole::Exit()
 {
     if (m_should_pause_)

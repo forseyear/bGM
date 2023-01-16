@@ -1,3 +1,4 @@
+#define bGM_get_position
 {
 
    /********************************************************************************
@@ -31,12 +32,12 @@
 
    // ファイルパスを作成
    global.bGM_gpo_file_path = "GetPositionTemp";
-    
+
    if(!file_exists(global.bGM_gpo_file_path))
    {
       return false;
    }
-   
+
    // ファイルから戻り値を読み取る
    f = file_text_open_read(global.bGM_gpo_file_path);
    number = file_text_read_real(f);

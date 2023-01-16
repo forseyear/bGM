@@ -23,8 +23,8 @@ IDI_ICON1          ICON           "icon2.ico"
 //
 LANGUAGE 9, SUBLANG_DEFAULT
 1 VERSIONINFO
-    FILEVERSION     1,0,1,134
-    PRODUCTVERSION  1,0,1,134
+    FILEVERSION     1,0,3,136
+    PRODUCTVERSION  1,0,3,136
     FILEOS          VOS_UNKNOWN
     FILETYPE        VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -36,14 +36,14 @@ LANGUAGE 9, SUBLANG_DEFAULT
         BLOCK "041104E4"
         {
             VALUE "CompanyName", ""
-            VALUE "FileVersion", "1.0.1"
+            VALUE "FileVersion", "1.0.3"
             VALUE "FileDescription", "background-music player for Game Maker"
             VALUE "InternalName", ""
             VALUE "LegalCopyright", "Yokoshima-na-Mr.0"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", ""
             VALUE "ProductName", "bGM"
-            VALUE "ProductVersion", "1.0.1"
+            VALUE "ProductVersion", "1.0.3"
         }
     }
     BLOCK "VarFileInfo"

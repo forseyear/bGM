@@ -20,14 +20,13 @@ void CBgmPlayer::init(sound_options_p const &so)
     }
     m_pBgmConsole_->Init();
 
-    // TODO support .midi file -> audiere::OpenMIDIDevoce();
     m_audio_device_ = audiere::OpenDevice();
     if (m_audio_device_ != 0) {
         m_pBgmConsole_->DoneOpenDevice();
     } else {
         m_pBgmConsole_->FailedOpenDevice();
     }
-    
+
     m_loop_point_ = audiere::CreateLoopPointSource(audiere::OpenSampleSource(cc.ToString(m_sound_options_.filename).data()));
     m_sample_source_ = m_loop_point_.get();
     m_output_stream_ = audiere::OpenSound(m_audio_device_, m_sample_source_, true);
@@ -39,7 +38,7 @@ void CBgmPlayer::init(sound_options_p const &so)
         tstring filename = cc.ToTstring(m_sound_options_.filename.data());
         m_pBgmConsole_->FailedLoadStream(filename);
     }
-    
+
     m_output_stream_->setPan(m_sound_options_.pan);
     m_output_stream_->setPitchShift(m_sound_options_.pitch);
     m_output_stream_->setRepeat(m_sound_options_.isLooping);
@@ -209,7 +208,7 @@ void CBgmPlayer::addRepeat(int repeatPositionA, int repeatPositionB)
     }
     m_repeat_positionA_ = soundRange(repeatPositionA);
     m_repeat_positionB_ = soundRange(repeatPositionB);
-    
+
     m_loop_point_->addLoopPoint(m_repeat_positionA_, m_repeat_positionB_, 0);
 }
 

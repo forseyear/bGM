@@ -6,7 +6,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 {
     std::shared_ptr<CArgsList> pArgsList(new CArgsList(__argc, __targv));
     std::unique_ptr<CBgmWindow> pBgmWindow(new CBgmWindow(pArgsList));
-    
+
     if (pArgsList->hasMyWindowClassName())
     {
         tstring szWindowName = pArgsList->getMyWindowClassName();

@@ -1,3 +1,4 @@
+#define bGM_is_playing
 {
 
    /********************************************************************************
@@ -32,12 +33,12 @@
 
    // ファイルパスを作成
    global.bGM_isp_file_path = "isPlayTemp";
-    
+
    if(!file_exists(global.bGM_isp_file_path))
    {
       return false;
    }
-   
+
    // ファイルから戻り値を読み取る
    f = file_text_open_read(global.bGM_isp_file_path);
    key = file_text_read_real(f);

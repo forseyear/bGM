@@ -21,4 +21,3 @@ void CTempFileCreator::Create(tstring &szFileName, int iNumber)
     outputfile << iNumber;
     outputfile.close();
 }
-

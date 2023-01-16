@@ -1,3 +1,4 @@
+#define bGM_is_opening
 {
 
    /********************************************************************************
@@ -32,12 +33,12 @@
 
    // ファイルパスを作成
    global.bGM_iso_file_path = "isOpenTemp";
-    
+
    if(!file_exists(global.bGM_iso_file_path))
    {
       return false;
    }
-   
+
    // ファイルから戻り値を読み取る
    f = file_text_open_read(global.bGM_iso_file_path);
    key = file_text_read_real(f);

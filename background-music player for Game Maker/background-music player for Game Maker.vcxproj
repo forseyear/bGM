@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="args_list.cpp" />
     <ClCompile Include="bGM_console.cpp" />
+    <ClCompile Include="bGM_midi_player.cpp" />
     <ClCompile Include="bGM_player.cpp" />
     <ClCompile Include="bGM_window.cpp" />
     <ClCompile Include="character_converter.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="args_list.hpp" />
     <ClInclude Include="audiere.h" />
     <ClInclude Include="bGM_console.hpp" />
+    <ClInclude Include="bGM_midi_player.hpp" />
     <ClInclude Include="bGM_player.hpp" />
     <ClInclude Include="bGM_window.hpp" />
     <ClInclude Include="character_converter.hpp" />

@@ -17,6 +17,7 @@ public:
     void DoneStartPlayback(const tstring &szDeviceName, const tstring &szFileName);
     void FailedStartPlayback();
     void UpdateStatus(bool shouldLoop, bool isPausing, float fVolume, float fPan, float fPitch);
+    void UpdateMIDIStatus(bool shouldLoop, bool isPausing);
     void Exit();
 private:
     static BOOL WINAPI HandlerRoutine(DWORD dwCtrlType);

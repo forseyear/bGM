@@ -16,37 +16,37 @@ class CBgmPlayer
 public:
     CBgmPlayer();
     virtual ~CBgmPlayer();
-    void init(sound_options_p const &so);
-    void stopFade()
+    virtual void init(sound_options_p const &so);
+    virtual void stopFade()
     {
         m_need_StopFade_ = true;
     };
-    void fadeIn(int fadeFrame, float volume);
-    void fadeOut(int fadeFrame, float volume);
-    void executeFadeIn(std::chrono::milliseconds interval, float fadedVolume);
-    void executeFadeOut(std::chrono::milliseconds interval, float fadedVolume);
-    void firstPlay();
-    void play();
-    void pause();
-    void reset();
-    void stop();
-    void setVolume(float volume);
-    void setPan(float pan);
-    void setPitch(float pitch);
-    void addRepeat(int repeatPositionA, int repeatPositionB);
-    void setRepeatCount(int repeatCount);
-    void removeRepeat();
-    void checkRepeat();
-    void setLoop(bool isLooping);
-    void setPosition(int position);
-    bool getisLooping() const;
-    void writePosition();
-    void writeLength();
-    void printSoundOptions();
-    int soundRange(const int &number);
-    float volumeRange(const float &volume);
-    float panRange(const float &pan);
-    float pitchRange(const float &pitch);
+    virtual void fadeIn(int fadeFrame, float volume);
+    virtual void fadeOut(int fadeFrame, float volume);
+    virtual void executeFadeIn(std::chrono::milliseconds interval, float fadedVolume);
+    virtual void executeFadeOut(std::chrono::milliseconds interval, float fadedVolume);
+    virtual void firstPlay();
+    virtual void play();
+    virtual void pause();
+    virtual void reset();
+    virtual void stop();
+    virtual void setVolume(float volume);
+    virtual void setPan(float pan);
+    virtual void setPitch(float pitch);
+    virtual void addRepeat(int repeatPositionA, int repeatPositionB);
+    virtual void setRepeatCount(int repeatCount);
+    virtual void removeRepeat();
+    virtual void checkRepeat();
+    virtual void setLoop(bool isLooping);
+    virtual void setPosition(int position);
+    virtual bool getisLooping() const;
+    virtual void writePosition();
+    virtual void writeLength();
+    virtual void printSoundOptions();
+    virtual int soundRange(const int &number);
+    virtual float volumeRange(const float &volume);
+    virtual float panRange(const float &pan);
+    virtual float pitchRange(const float &pitch);
     template <typename T>
     T maxmin(const T &max, const T &min, const T &number);
 private:

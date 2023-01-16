@@ -2,7 +2,6 @@
 
 CBgmWindow::CBgmWindow(const std::shared_ptr<CArgsList> &pArgsList) : m_pArgsList_(pArgsList)
 {
-    
     if (m_pArgsList_->hasTargetWindowClassName())
     {
         tstring targetWindowClassName = m_pArgsList_->getTargetWindowClassName();
@@ -24,18 +23,30 @@ CBgmWindow::~CBgmWindow()
 
 void CBgmWindow::InitPlayer()
 {
+    // bGM_play, bGM_load, bGM_play_midi, bGM_load_midi
     sound_options_p so = {
         m_pArgsList_->getFileName(),
-        m_pArgsList_->getVolume(),
-        m_pArgsList_->getPan(),
-        m_pArgsList_->getPitch(),
+        0.5, // Volume
+        0.0, // Pan
+        1.0, // Pitch
         false, // isPlaying
         m_pArgsList_->getIsLooping(),
         m_pArgsList_->getIsDebuging(),
         m_pArgsList_->getIsLoadOnly(),
     };
 
-    m_pBgmPlayer_.reset(new CBgmPlayer());
+    if (m_pArgsList_->getIsMIDI())
+    {
+        m_pBgmPlayer_.reset(new CBgmidiPlayer());
+    }
+    else
+    {
+        so.volume = m_pArgsList_->getVolume();
+        so.pan = m_pArgsList_->getPan();
+        so.pitch = m_pArgsList_->getPitch();
+        m_pBgmPlayer_.reset(new CBgmPlayer());
+    }
+
     m_pBgmPlayer_->init(so);
 }
 
@@ -122,22 +133,30 @@ void CBgmWindow::PassOption(TCHAR &param)
         break;
     case _T('g'):
         PostWindowMessage(bWM_SET_REPEAT_COUNT, 0, (WPARAM)m_pArgsList_->getRepeatCount());
+    // loop point a
     case _T('a'):
         PostWindowMessage(bWM_ADD_REPEAT, (WPARAM)m_pArgsList_->getRepeatPointA(), (LPARAM)m_pArgsList_->getRepeatPointB());
         break;
+    // loop point B
     case _T('b'):
         break;
     case _T('x'):
         PostWindowMessage(bWM_REMOVE_REPEAT, 0, 0);
         break;
+    // volume of fade after
     case _T('V'):
         break;
+    // fade in
     case _T('h'):
         PostWindowMessage(bWM_FADE_IN, (WPARAM)m_pArgsList_->getFadeInFrame(), (LPARAM)m_pArgsList_->getFadedVolume());
         break;
+    // fade out
     case _T('q'):
         PostWindowMessage(bWM_FADE_OUT, (WPARAM)m_pArgsList_->getFadeOutFrame(), (LPARAM)m_pArgsList_->getFadedVolume());
         break;
+    // is MIDI
+    case _T('M'):
+    break;
     case _T('c'):
         PostWindowMessage(bWM_CHECK_REPEAT, 0, 0);
         break;
@@ -151,6 +170,7 @@ void CBgmWindow::PassOption(TCHAR &param)
         SendWindowMessage(bWM_GET_LENGTH, 0, 0);
         break;
     default:
+        // undefined parameter
         break;
     }
 }
@@ -191,6 +211,7 @@ bool CBgmWindow::Create(HINSTANCE hInstance, LPCTSTR szClassName, LPCTSTR szWind
         hInstance,
         this
     );
+
     if (hWnd == nullptr)
     {
         return false;
@@ -215,7 +236,7 @@ LRESULT CBgmWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
     case WM_DESTROY:
         ::PostQuitMessage(0);
         break;
- 
+
     case bWM_PAUSE:
         m_pBgmPlayer_->pause();
         break;
@@ -237,7 +258,7 @@ LRESULT CBgmWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
         m_pBgmPlayer_->setVolume((float)lp);
         break;
 
-    case bWM_SET_PAN:;
+    case bWM_SET_PAN:
         m_pBgmPlayer_->setPan((float)lp);
         break;
 

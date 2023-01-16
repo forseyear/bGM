@@ -1,3 +1,4 @@
+#define bGM_private_controll_1arg
 {
    /* ------------------- bGM Scriptsの内部から呼ばれるプライベート関数 ------------------- */
 

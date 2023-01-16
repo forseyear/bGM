@@ -106,7 +106,6 @@ LRESULT CWindow::WindowProc(HWND hWnd, UINT Msg, WPARAM wp, LPARAM lp)
 
 LRESULT CALLBACK CWindow::StaticWindowProc(HWND hWnd, UINT Msg, WPARAM wp, LPARAM lp)
 {
-    
     CWindow *pWindow = (CWindow*)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
     if (pWindow == nullptr)
     {

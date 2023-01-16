@@ -1,3 +1,4 @@
+#define bGM_private_generate_pid
 {
    /* ------------------- bGM Scriptsの内部から呼ばれるプライベート関数 ------------------- */
 

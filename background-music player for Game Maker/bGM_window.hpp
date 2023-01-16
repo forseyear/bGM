@@ -4,6 +4,7 @@
 #include "window.hpp"
 #include "args_list.hpp"
 #include "bGM_player.hpp"
+#include "bGM_midi_player.hpp"
 #include "sound_options.hpp"
 #include "tempfile_creator.hpp"
 #include "resource.hpp"

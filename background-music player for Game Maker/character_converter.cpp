@@ -23,7 +23,7 @@ std::string CCharacterConverter::ToString(const std::wstring &src)
 }
 
 std::string CCharacterConverter::ToString(const std::string &src)
-{ 
+{
     return src;
 }
 

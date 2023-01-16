@@ -103,10 +103,11 @@ bool CArgsList::existsOption(TCHAR szParam) const
     case _T('c'):
     case _T('j'):
     case _T('l'):
+    case _T('M'):
         return false;
     default:
         // undefined parameter
-        // A, B, C, D, E, F, G, H, I, J, K, M, N, O, P, Q, R, S, T, U, W, X, Y, Z
+        // A, B, C, D, E, F, G, H, I, J, K, N, O, P, Q, R, S, T, U, W, X, Y, Z
         return false;
     }
 }

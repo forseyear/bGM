@@ -27,7 +27,7 @@ public:
     {
         return getTstringOption(_T('i'));
     }
-    
+
     inline float getVolume() const
     {
         return getFloatOption(_T('v'));
@@ -82,7 +82,7 @@ public:
     {
         return getLongOption(_T('w'));
     }
-    
+
     inline void removeTargetWindowClassName()
     {
         return removeOption(_T('t'));
@@ -112,7 +112,12 @@ public:
     {
         return hasOption(_T('z'));
     }
-    
+
+    inline bool getIsMIDI() const
+    {
+        return hasOption(_T('M'));
+    }
+
     std::vector<TCHAR> getArgumentList() const;
 private:
     bool hasOption(TCHAR szParam) const;
