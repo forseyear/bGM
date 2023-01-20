@@ -21,7 +21,8 @@ void CBgmidiPlayer::init(sound_options_p const &so)
     m_pBgmConsole_->Init();
 
     m_midi_device_ = audiere::OpenMIDIDevice("MCI");
-    if (m_midi_device_ != 0) {
+    if (m_midi_device_ != 0)
+    {
         m_pBgmConsole_->DoneOpenDevice();
     } else {
         m_pBgmConsole_->FailedOpenDevice();

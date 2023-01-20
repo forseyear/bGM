@@ -21,7 +21,8 @@ void CBgmPlayer::init(sound_options_p const &so)
     m_pBgmConsole_->Init();
 
     m_audio_device_ = audiere::OpenDevice();
-    if (m_audio_device_ != 0) {
+    if (m_audio_device_ != 0)
+    {
         m_pBgmConsole_->DoneOpenDevice();
     } else {
         m_pBgmConsole_->FailedOpenDevice();
